@@ -148,9 +148,7 @@ public class TrafficGenerator {
 
             Flow newFLow = new Flow(id, src, dst, time, callsTypesInfo[type].getRate(), holdingTime, callsTypesInfo[type].getCOS(), time+(holdingTime*0.5));
 //            newFLow.setDataRequest(nRequest);
-            Event event;
-            new InfoWriter(new Flow(id, src, dst, time, callsTypesInfo[type].getRate(), holdingTime, callsTypesInfo[type].getCOS(), time+(holdingTime*0.5)));
-            event = new FlowArrivalEvent(time, newFLow);
+            Event event;event = new FlowArrivalEvent(time, newFLow);
             time += dist3.nextExponential(meanArrivalTime);
             events.addEvent(event);
             event = new FlowDepartureEvent(time + holdingTime, id, newFLow);

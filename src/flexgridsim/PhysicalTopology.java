@@ -10,10 +10,6 @@ import org.w3c.dom.*;
 
 import flexgridsim.util.WeightedGraph;
 
-import flexgridsim.InfoWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-
 /**
  * The physical topology of a network refers to the physical layout of devices
  * on a network, or to the way that the devices on a network are arranged and
@@ -64,7 +60,6 @@ public class PhysicalTopology {
             protection = Boolean.parseBoolean(xml.getAttribute("protection"));
             overlap = Boolean.parseBoolean(xml.getAttribute("sharing"));
             grooming = Boolean.parseBoolean(xml.getAttribute("grooming"));
-            //System.out.println(overlap);
             cores = Integer.parseInt(xml.getAttribute("cores"));
             slots = Integer.parseInt(xml.getAttribute("slots"));
             slotBw = Double.parseDouble(xml.getAttribute("slotsBandwidth")); //legacy, but usable if no modulation is used
@@ -98,10 +93,8 @@ public class PhysicalTopology {
                 dst = Integer.parseInt(((Element) linklist.item(i)).getAttribute("destination"));
                 delay = Double.parseDouble(((Element) linklist.item(i)).getAttribute("delay"));
                 weight = Double.parseDouble(((Element) linklist.item(i)).getAttribute("weight"));
-                //distance==weigth
                 distance = Integer.parseInt(((Element) linklist.item(i)).getAttribute("weight"));
                 
-                // Pega o indice desse vetor e muda ele
                 linkVector[id] = adjMatrix[src][dst] = new FlexGridLink(id, src, dst, cores, delay, slots, weight, distance);
                 new InfoWriter(new FlexGridLink(id, src, dst, cores, delay, slots, weight, distance));
             }
@@ -112,23 +105,25 @@ public class PhysicalTopology {
             t.printStackTrace();
         }
     }
-    
-    
+
     /**
      * @return if protection should to share slot return true
      */
     public boolean getOverlap() {
   		return overlap;
   	}
+    
     public boolean getGrooming() {
   		return grooming;
   	}
+    
     /**
      * @return if have protection
      */
     public boolean getProtection() {
   		return protection;
   	}
+    
     /**
      * Retrieves the number of nodes in a given PhysicalTopology.
      * 
@@ -137,18 +132,20 @@ public class PhysicalTopology {
     public int getNumNodes() {
         return nodes;
     }
+    
     /**
      * @return if have protection
      */ 
     public int getMultipath() {
   		return multipath;
   	}
+    
     public void setMultipath(int k) {
   		this.multipath =k;
   	}
     
     /**
-     * @return the numero of fiber cores used in the links
+     * @return the number of fiber cores used in the links
      */
     public int getNumCores() {
   		return cores;
@@ -296,7 +293,6 @@ public class PhysicalTopology {
 		}
     	return degree;
     }
-    
     
     /**
      * Can groom.

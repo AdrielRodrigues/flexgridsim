@@ -11,9 +11,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-/*============== Teste ================*/
-import java.io.FileWriter;
-import java.io.PrintWriter;
 
 /**
  * Centralizes the simulation execution. Defines what the command line
@@ -24,7 +21,7 @@ import java.io.PrintWriter;
 public class Simulator {
 
     private static final String simName = new String("flexgridsim");
-    private static final Float simVersion = new Float(2.0);
+    private static final float simVersion = 2.0F;
     
     /** Verbose flag. */
     public static boolean verbose = false;
@@ -52,7 +49,7 @@ public class Simulator {
 
         if (Simulator.verbose) {
             System.out.println("#################################");
-            System.out.println("# Simulator " + simName + " version " + simVersion.toString() + "  #");
+            System.out.println("# Simulator " + simName + " version " + Float.toString(simVersion) + "  #");
             System.out.println("#################################\n");
         }
         if (Simulator.verbose) {

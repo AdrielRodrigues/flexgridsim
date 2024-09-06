@@ -3,16 +3,9 @@
  * and open the template in the editor.
  */
 package flexgridsim;
-//
 
-//import com.opencsv.CSVWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-//
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,11 +37,6 @@ public class ControlPlane implements ControlPlaneForRSA {
     private Tracer tr = Tracer.getTracerObject();
     private MyStatistics st = MyStatistics.getMyStatisticsObject();
     
-    /*
-    private List<String[]> linhas;
-    private String[] c = {"id", "src", "dst", "accepted", "path", "protection"};
-    */
-
 	/**
 	 * Creates a new ControlPlane object.
 	 *
@@ -72,11 +60,6 @@ public class ControlPlane implements ControlPlaneForRSA {
         this.pt = pt;
         this.vt = vt;
         
-        //
-        //String[] cabecalho = {"id", "src", "dst"};
-        //linhas = new ArrayList<>();
-        //
-        
         try {
             RSAClass = Class.forName(rsaModule);
             rsa = (RSA) RSAClass.newInstance();
@@ -84,7 +67,6 @@ public class ControlPlane implements ControlPlaneForRSA {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-
     }
 
     /**
@@ -101,14 +83,7 @@ public class ControlPlane implements ControlPlaneForRSA {
         	Flow flow = ((FlowArrivalEvent) event).getFlow();
         	
             newFlow(flow);
-            rsa.flowArrival(flow);
-            
-            //String.valueOf(flow.getID()), String.valueOf(flow.getSource()), String.valueOf(flow.getDestination()), String.valueOf(flow.isAccepeted()), 
-            //linhas.add(new String[] {String.valueOf(flow.getID()), String.valueOf(flow.getSource()), String.valueOf(flow.getDestination()), String.valueOf(flow.isAccepeted()), flow.printLinks(), flow.printLinksp() });
-            
-            //System.out.println(flow.printLinks());
-            
-            
+            rsa.flowArrival(flow);            
         } else if (event instanceof FlowDepartureEvent) {
             Flow removedFlow = removeFlow(((FlowDepartureEvent) event).getID());
             rsa.flowDeparture(removedFlow); // Useless
@@ -171,7 +146,6 @@ public class ControlPlane implements ControlPlaneForRSA {
             }
             
             addPathToPT(flow, lightpath);
-            
             
             mappedFlows.put(flow, lightpath);
             tr.acceptFlow(flow, lightpath);
