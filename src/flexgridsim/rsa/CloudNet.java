@@ -18,7 +18,7 @@ import flexgridsim.util.MultiGraph;
 import flexgridsim.util.WeightedGraph;
 
 /**
- * @author adriel
+ * @author AdrielRodrigues
  *
  */
 
@@ -79,7 +79,7 @@ public class CloudNet implements RSA  {
 			cp.blockFlow(flow.getID());
 			return;
 		}
-		
+
 		switch (flow.getConnectionType()) {
 		case 0:		// Node to Node
 			managementNode(flow, path, modulation, id);

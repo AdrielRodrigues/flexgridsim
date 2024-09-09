@@ -96,7 +96,6 @@ public class PhysicalTopology {
                 distance = Integer.parseInt(((Element) linklist.item(i)).getAttribute("weight"));
                 
                 linkVector[id] = adjMatrix[src][dst] = new FlexGridLink(id, src, dst, cores, delay, slots, weight, distance);
-                new InfoWriter(new FlexGridLink(id, src, dst, cores, delay, slots, weight, distance));
             }
             
             this.graph = doWeightedGraph();

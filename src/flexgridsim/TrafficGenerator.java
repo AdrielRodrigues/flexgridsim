@@ -5,7 +5,6 @@
 package flexgridsim;
 
 import java.util.ArrayList;
-import flexgridsim.InfoWriter;
 
 import org.w3c.dom.*;
 
