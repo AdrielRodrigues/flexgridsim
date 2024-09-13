@@ -2,18 +2,21 @@ package flexgridsim.graphs;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Define the methods all graphs must have.
  *
- * @author pedrom
+ * @author pedrom, adriel
  */
 public class Graph {
 
 	private String name;
 	private String dotsFileName;
 	private DataSet dataSet;
-
+	private String folderPath;
+	private Path fullpath;
 
 	/**
 	 * Instantiates a new graph.
@@ -28,6 +31,8 @@ public class Graph {
 		this.name = name;
 		this.dotsFileName = dotsFileName;
 		this.dataSet = new DataSet(dataSetDimension);
+		this.folderPath = "output";
+		this.fullpath = Paths.get(this.folderPath, this.dotsFileName);
 	}
 
 	/**
@@ -45,7 +50,7 @@ public class Graph {
 	public void writeDotsToFile() {
 		FileWriter fStream;
 		try {
-			fStream = new FileWriter(dotsFileName, true);
+			fStream = new FileWriter(fullpath.toString(), true);
 			fStream.append(dataSet.dotToString()+System.getProperty("line.separator"));
 			fStream.close();
 		} catch (IOException e) {
