@@ -5,10 +5,12 @@
 package flexgridsim;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.w3c.dom.*;
 
 import flexgridsim.util.Distribution;
+import flexgridsim.util.WeightedGraph;
 
 /**
  * Generates the network's traffic based on the information passed through the
@@ -130,15 +132,34 @@ public class TrafficGenerator {
         dist3 = new Distribution(3, seed);
         dist4 = new Distribution(4, seed);
         
-        int[] set_dc = positioningDataCenter(10);
+//        int[] set_dc = positioningDataCenter(10);
+        int numDataCenters = 2;
+        int[] dataCenterNodes = kMeansClustering(pt.getWeightedGraph(), numDataCenters);;
+        int counterDC = 0;
         
         for (int j = 0; j < calls; j++) {
         		
-            type = weightVector[dist1.nextInt(TotalWeight)];
+        	type = weightVector[dist1.nextInt(TotalWeight)];
             src = dst = dist2.nextInt(numNodes);
             while (src == dst) {
-                dst = dist2.nextInt(numNodes);
+            	double chance = dist2.nextDouble();
+            	if (chance <= 0.3) { // DC Probability
+            		int ind = dist2.nextInt(numDataCenters);
+            		dst = dataCenterNodes[ind];
+            	} else {
+            		dst = dist2.nextInt(numNodes);
+            	}
             }
+//            System.out.println(dst);
+            // Connection Differentiation
+            int connectionType = 0;
+            for (int i = 0; i < dataCenterNodes.length; i++) {
+            	if ((src == dataCenterNodes[i]) || (dst == dataCenterNodes[i]))
+            		connectionType = 1; // This means connection involving DataCenter; Maybe add other two cases
+            }
+            
+            if ((dst == dataCenterNodes[0]) || (dst == dataCenterNodes[1]))
+            	counterDC += 1;
             
             double holdingTime;
 
@@ -170,5 +191,74 @@ public class TrafficGenerator {
     	// TODO implements the positioning algorithm
     	int[] dc_set = {5, 13};
     	return dc_set;
+    }
+    
+    public static int[] kMeansClustering(WeightedGraph g, int k) {
+		double[][] distanceMatrix = new double [g.getNumNodes()][g.getNumNodes()];
+		for (int i = 0; i < g.getNumNodes(); i++) {
+			for (int j = 0; j < g.getNumNodes(); j++) {
+				distanceMatrix[i][j] = g.getWeight(i, j);
+			}
+		}
+		
+        int n = distanceMatrix.length;
+        Random random = new Random();
+
+        // Initialize centroids (datacenter positions) randomly
+        int[] centroids = new int[k];
+        for (int i = 0; i < k; i++) {
+            centroids[i] = random.nextInt(n);
+        }
+
+        int[] labels = new int[n];
+        boolean changed;
+
+        do {
+            changed = false;
+
+            // Assign each node to the nearest centroid
+            for (int i = 0; i < n; i++) {
+                double minDistance = Double.MAX_VALUE;
+                int closestCentroid = -1;
+
+                for (int j = 0; j < k; j++) {
+                    double distance = distanceMatrix[i][centroids[j]];
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestCentroid = centroids[j];
+                    }
+                }
+
+                if (labels[i] != closestCentroid) {
+                    labels[i] = closestCentroid;
+                    changed = true;
+                }
+            }
+
+            // Update centroids
+            for (int j = 0; j < k; j++) {
+                double minSumDistance = Double.MAX_VALUE;
+                int newCentroid = centroids[j];
+
+                for (int i = 0; i < n; i++) {
+                    double sumDistance = 0;
+                    for (int l = 0; l < n; l++) {
+                        if (labels[l] == centroids[j]) {
+                            sumDistance += distanceMatrix[i][l];
+                        }
+                    }
+
+                    if (sumDistance < minSumDistance) {
+                        minSumDistance = sumDistance;
+                        newCentroid = i;
+                    }
+                }
+
+                centroids[j] = newCentroid;
+            }
+
+        } while (changed);
+
+        return centroids;
     }
 }

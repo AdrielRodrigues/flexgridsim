@@ -33,7 +33,7 @@ public class Flow {
     private ArrayList<Integer> modulationLevelBack;
     
     private int dataRequest;
-    private int transferType;
+    private int connectionType;
 
 	/**
 	 * Creates a new Flow object.
@@ -68,13 +68,21 @@ public class Flow {
             this.slotListp = new ArrayList<ArrayList<Slot>> ();
         }
     }
+   
+    public int getDataRequest () {
+    	return this.dataRequest;
+    }
     
     public void setDataRequest (int random) {
     	this.dataRequest = random;
     }
     
-    public void setTransferType (int type) {
-    	this.transferType = type;
+    public int getConnectionType () {
+    	return this.connectionType;
+    }
+    
+    public void setConnectionType (int type) {
+    	this.connectionType = type;
     }
     
     /**
