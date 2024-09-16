@@ -47,6 +47,7 @@ public class Graph {
 	/**
 	 * Write dots to file.
 	 */
+	// TODO enable the simulator to create the path if it does not exist
 	public void writeDotsToFile() {
 		FileWriter fStream;
 		try {

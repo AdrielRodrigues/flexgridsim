@@ -102,6 +102,8 @@ public class TrafficGenerator {
      */
 
 	public void generateTraffic(PhysicalTopology pt, EventScheduler events, int seed) {
+		
+		boolean isDataCenterNetwork = true;
 
         // Compute the weight vector
         int[] weightVector = new int[TotalWeight];
@@ -131,47 +133,49 @@ public class TrafficGenerator {
         dist2 = new Distribution(2, seed);
         dist3 = new Distribution(3, seed);
         dist4 = new Distribution(4, seed);
-        
-//        int[] set_dc = positioningDataCenter(10);
+
         int numDataCenters = 2;
-        int[] dataCenterNodes = kMeansClustering(pt.getWeightedGraph(), numDataCenters);;
-        int counterDC = 0;
-        
+        int[] dataCenterNodes = positioningDC(pt.getWeightedGraph(), numDataCenters);;
+
         for (int j = 0; j < calls; j++) {
-        		
-        	type = weightVector[dist1.nextInt(TotalWeight)];
-            src = dst = dist2.nextInt(numNodes);
-            while (src == dst) {
-            	double chance = dist2.nextDouble();
-            	if (chance <= 0.3) { // DC Probability
-            		int ind = dist2.nextInt(numDataCenters);
-            		dst = dataCenterNodes[ind];
-            	} else {
-            		dst = dist2.nextInt(numNodes);
-            	}
-            }
-//            System.out.println(dst);
-            // Connection Differentiation
-            int connectionType = 0;
-            for (int i = 0; i < dataCenterNodes.length; i++) {
-            	if ((src == dataCenterNodes[i]) || (dst == dataCenterNodes[i]))
-            		connectionType = 1; // This means connection involving DataCenter; Maybe add other two cases
-            }
+
+        	int connectionType = 0;
+        	int nRequest = 0;
+        	
+//        	type = weightVector[dist1.nextInt(TotalWeight)];
+//            src = dst = dist2.nextInt(numNodes);
+//            while (src == dst) {
+//            	if ((isDataCenterNetwork) && (dist2.nextDouble() <= 0.3)) { // DC Probability
+//            		int index = dist2.nextInt(numDataCenters);
+//            		dst = dataCenterNodes[index];
+//            		connectionType = 1; // DC involved
+//            	} else {
+//            		dst = dist2.nextInt(numNodes);
+//            	}
+//            }
             
-            if ((dst == dataCenterNodes[0]) || (dst == dataCenterNodes[1]))
-            	counterDC += 1;
+            type = weightVector[dist1.nextInt(TotalWeight)];
+            src = dst = dist2.nextInt(numNodes);
+            
+            while (src == dst) {
+            	int index = dist2.nextInt(numDataCenters);
+            	dst = dataCenterNodes[index];
+            	connectionType = 1; // DC involved
+            }
             
             double holdingTime;
 
             // Maybe think about how much time it takes according to the content
             holdingTime = dist4.nextExponential(callsTypesInfo[type].getHoldingTime());
 
-            Flow newFLow = new Flow(id, src, dst, time, callsTypesInfo[type].getRate(), holdingTime, callsTypesInfo[type].getCOS(), time+(holdingTime*0.5));
-//            newFLow.setDataRequest(nRequest);
-            Event event;event = new FlowArrivalEvent(time, newFLow);
+            Flow newFlow = new Flow(id, src, dst, time, callsTypesInfo[type].getRate(), holdingTime, callsTypesInfo[type].getCOS(), time+(holdingTime*0.5));
+            newFlow.setDataRequest(nRequest);
+            newFlow.setConnectionType(connectionType);
+            Event event;
+            event = new FlowArrivalEvent(time, newFlow);
             time += dist3.nextExponential(meanArrivalTime);
             events.addEvent(event);
-            event = new FlowDepartureEvent(time + holdingTime, id, newFLow);
+            event = new FlowDepartureEvent(time + holdingTime, id, newFlow);
             events.addEvent(event);
             id++;
     	}
@@ -193,7 +197,7 @@ public class TrafficGenerator {
     	return dc_set;
     }
     
-    public static int[] kMeansClustering(WeightedGraph g, int k) {
+    public int[] positioningDC (WeightedGraph g, int k) {
 		double[][] distanceMatrix = new double [g.getNumNodes()][g.getNumNodes()];
 		for (int i = 0; i < g.getNumNodes(); i++) {
 			for (int j = 0; j < g.getNumNodes(); j++) {
