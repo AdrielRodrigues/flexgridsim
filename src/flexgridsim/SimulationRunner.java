@@ -25,8 +25,8 @@ public class SimulationRunner {
         MyStatistics st = MyStatistics.getMyStatisticsObject();
         int a = 0;
         while ((event = events.popEvent()) != null) {
-        	if(a == 5000)
-        		a = 5000;
+        	if(a % 10000 == 0)
+        		System.out.print(a+",");
         	a++;
 	        tr.add(event);
 	        st.addEvent(event);
