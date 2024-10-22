@@ -93,5 +93,5 @@
     <graph name="ee" dots-file="SBRC-nsf-ee.dat"/>
     <graph name="pc" dots-file="SBRC-nsf-pc.dat"/>
     <graph name="avgbps" dots-file="SBRC-nsf-avgbps.dat"/>
-    </graphs>
+    </graphs>	
 </flexgridsim>

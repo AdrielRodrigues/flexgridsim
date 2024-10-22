@@ -28,13 +28,13 @@ public class SimulationRunner {
         boolean last = false;
         while ((event = events.popEvent()) != null) {
         	if(a % 10000 == 0)
-//        		System.out.print("|");
-        	if (a == 199999) {
-        		last = true;
-        		number = ((FlowDepartureEvent) event).getFlow().getID();
-        		System.out.println(number);
-//        		System.out.println(events.numEvents());
-        	}
+        		System.out.print("|");
+//        	if (a == 199999) {
+//        		last = true;
+//        		number = ((FlowDepartureEvent) event).getFlow().getID();
+//        		System.out.println(number);
+////        		System.out.println(events.numEvents());
+//        	}
         	a++;
 	        tr.add(event);
 	        st.addEvent(event);
