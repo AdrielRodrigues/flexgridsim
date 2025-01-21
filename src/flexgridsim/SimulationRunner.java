@@ -19,22 +19,16 @@ public class SimulationRunner {
      * @param events the simulation's event scheduler
      */
 	public SimulationRunner(){}
-	public void running(ControlPlane cp, EventScheduler events) {
+	public void running(ControlPlane cp, EventScheduler events, int b) {
         Event event;
         Tracer tr = Tracer.getTracerObject();
         MyStatistics st = MyStatistics.getMyStatisticsObject();
         int a = 0;
-        long number;
         boolean last = false;
         while ((event = events.popEvent()) != null) {
-        	if(a % 10000 == 0)
-        		System.out.print("|");
-//        	if (a == 199999) {
-//        		last = true;
-//        		number = ((FlowDepartureEvent) event).getFlow().getID();
-//        		System.out.println(number);
-////        		System.out.println(events.numEvents());
-//        	}
+//        	if(a % 10000 == 0)
+//        		System.out.print("|");
+        	System.out.println(b + "-" + a);
         	a++;
 	        tr.add(event);
 	        st.addEvent(event);

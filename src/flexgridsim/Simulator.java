@@ -197,7 +197,7 @@ public class Simulator {
 	            
 	            
 	            SimulationRunner action =  new SimulationRunner();	// I had to add a new function instead use the constructor because I needed to see what is happening
-	            action.running(cp, events);
+	            action.running(cp, events, seed);
 	            
 	            if (Simulator.verbose) {
 	                System.out.println("(5) Done. (" + Float.toString((float) ((float) (System.currentTimeMillis() - begin) / (float) 1000)) + " sec)\n");

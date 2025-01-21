@@ -173,7 +173,7 @@ public class MyStatistics {
         }
         jfi = (sum1 * sum1) / ((float) count * sum2);
         plotter.addDotToGraph("jfi", load, jfi);
-    	//POWE CONSUPTION
+    	//POWER CONSUPTION
     	double ecoxc = 0;
     	for (int i = 0; i < pt.getNumNodes(); i++) {
     		//OXCs consume 150 Watts and each port 85 Watts. 

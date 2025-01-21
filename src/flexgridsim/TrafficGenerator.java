@@ -138,6 +138,7 @@ public class TrafficGenerator {
         int[] dataCenterNodes = positioningDC(pt.getWeightedGraph(), numDataCenters);;
 
         for (int j = 0; j < calls; j++) {
+//        	System.out.println(j);
 
         	int connectionType = 0;
         	int nRequest = 0;
