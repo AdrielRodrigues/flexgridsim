@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <flexgridsim version="0.4">
-    <rsa module="JISAISCC"/>
+    <rsa module="SBRC_2025"/>
 
     <trace file="trace.tr"/>
 
@@ -138,16 +138,16 @@
         </links>
     </physical-topology>
     <graphs>
-    <graph name="fragmentation" dots-file="SBRC-pan-fragmentation.dat"/>
-    <graph name="modulation" dots-file="SBRC-pan-modulation.dat"/>
-    <graph name="mbbr" dots-file="SBRC-pan-mbbr.dat"/>
-    <graph name="hops" dots-file="SBRC-pan-hops.dat"/>
-    <graph name="hopsback" dots-file="SBRC-pan-hopsback.dat"/>
-    <graph name="jfi" dots-file="SBRC-pan-jfi.dat"/>
-    <graph name="xtps" dots-file="SBRC-pan-xtps.dat"/>
-    <graph name="data" dots-file="SBRC-pan-data.dat"/>
-    <graph name="ee" dots-file="SBRC-pan-ee.dat"/>
-    <graph name="pc" dots-file="SBRC-pan-pc.dat"/>
-    <graph name="avgbps" dots-file="SBRC-pan-avgbps.dat"/>
+    <graph name="fragmentation" dots-file="SBRC-25-pan-fragmentation.dat"/>
+    <graph name="modulation" dots-file="SBRC-25-pan-modulation.dat"/>
+    <graph name="mbbr" dots-file="SBRC-25-pan-mbbr.dat"/>
+    <graph name="hops" dots-file="SBRC-25-pan-hops.dat"/>
+    <graph name="hopsback" dots-file="SBRC-25-pan-hopsback.dat"/>
+    <graph name="jfi" dots-file="SBRC-25-pan-jfi.dat"/>
+    <graph name="xtps" dots-file="SBRC-25-pan-xtps.dat"/>
+    <graph name="data" dots-file="SBRC-25-pan-data.dat"/>
+    <graph name="ee" dots-file="SBRC-25-pan-ee.dat"/>
+    <graph name="pc" dots-file="SBRC-25-pan-pc.dat"/>
+    <graph name="avgbps" dots-file="SBRC-25-pan-avgbps.dat"/>
     </graphs>
 </flexgridsim>

@@ -22,11 +22,19 @@ import flexgridsim.util.WeightedGraph;
  *
  */
 
-public class CloudNet implements RSA  {
+public class SBRC_2025 implements RSA  {
 	private PhysicalTopology pt;
 	private VirtualTopology vt;
 	private ControlPlaneForRSA cp;
 	private WeightedGraph graph;
+	
+    private int counter = 0;
+    private int counter_dc = 0;
+    private int counter_inter = 0;
+    
+    public String get_counter() {
+    	return "Regular Served = " + this.counter + "\nData Center Served = " + this.counter_dc + "\nInter Served = " + this.counter_inter + "\n";
+    }
 
 	@Override
 	public void flowDeparture(Flow flow) {
@@ -58,15 +66,8 @@ public class CloudNet implements RSA  {
 			// Demand may be different
 			demandInSlots = (int) Math.ceil(flow.getRate() / (double) Modulations.getBandwidth(mod)) + guardBand;
 			
-//			MultiGraph multigraph = new MultiGraph(graph, pt, demandInSlots);
 			path = getKShortestPath(graph, flow.getSource(), flow.getDestination(),	demandInSlots,false);
-			
-//			KShortestPaths kShortestPaths = new KShortestPaths();
-//			It returns a vector of nodes
-//			int[][] kPaths = kShortestPaths.dijkstraKShortestPaths(graph, flow.getSource(), flow.getDestination(), 5);
-//			boolean[][] spectrum = new boolean[pt.getNumCores()][pt.getNumSlots()];
-			
-//			path = getShortestPath(multigraph, flow.getSource(), flow.getDestination(),demandInSlots);
+
 			if(path!=null)
 				modulation=Modulations.getModulationByDistance(getPhysicalDistance(path.getLinks()));
 			else
@@ -84,9 +85,9 @@ public class CloudNet implements RSA  {
 		case 0:		// Node to Node
 			managementNode(flow, path, modulation, id);
 		case 1:		// DC to DC
-			managementDC(flow, path, modulation, id);
-		case 2:		// Node to DC
 			managementDN(flow, path, modulation, id);
+		case 2:		// Node to DC
+			managementDC(flow, path, modulation, id);
 		}
 	}
 	
@@ -110,7 +111,8 @@ public class CloudNet implements RSA  {
 			vt.removeLightPath(id);
 			cp.blockFlow(flow.getID());
 			return;
-		}	
+		}
+		this.counter_dc += 1;
 		return;
 	}
 	private void managementNode (Flow flow, Path path, int modulation, long id) {
@@ -132,7 +134,8 @@ public class CloudNet implements RSA  {
 			vt.removeLightPath(id);
 			cp.blockFlow(flow.getID());
 			return;
-		}	
+		}
+		this.counter += 1;
 		return;
 	}
 	private void managementDN (Flow flow, Path path, int modulation, long id) {
@@ -155,6 +158,7 @@ public class CloudNet implements RSA  {
 			cp.blockFlow(flow.getID());
 			return;
 		}	
+		this.counter_inter += 1;
 		return;
 	}
 

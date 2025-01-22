@@ -28,11 +28,13 @@ public class SimulationRunner {
         while ((event = events.popEvent()) != null) {
 //        	if(a % 10000 == 0)
 //        		System.out.print("|");
-        	System.out.println(b + "-" + a);
+//        	System.out.println(b + "-" + a);
         	a++;
 	        tr.add(event);
 	        st.addEvent(event);
             cp.newEvent(event, last);
         }
+//        cp.last();
+        System.out.println(st.getblocked());
     }
 }

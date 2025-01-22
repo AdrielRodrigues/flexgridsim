@@ -49,6 +49,9 @@ public class MyStatistics {
     //TODO private int redirectedBandwidth;
     private int[][] failuresPairs;
     
+    // NEW TRAFFIC DIFF
+    private int counter_regular, counter_dc, counter_inter, fail_regular, fail_dc, fail_inter;
+    
     
     /**
      * A private constructor that prevents any other class from instantiating.
@@ -65,12 +68,19 @@ public class MyStatistics {
 
         requiredBandwidth = 0;
         blockedBandwidth = 0;
+        
+        this.counter_regular = 0;
+        this.counter_dc = 0;
+        this.counter_inter = 0;
+        this.fail_regular = 0;
+        this.fail_dc = 0;
+        this.fail_inter = 0;
     }
     
     public int getblocked() {
     	return this.blocked;
     }
-    
+
     /**
      * Creates a new MyStatistics object, in case it does'n exist yet.
      * 
@@ -199,6 +209,9 @@ public class MyStatistics {
 //?
     	plotter.addDotToGraph("ee2",load, (((float) blockedBandwidth) / ((float) requiredBandwidth)) / (ectotal/(simTime*1000)));
     	
+    	
+//    	System.out.println("LAST STATISTICS\nREGULAR = " + this.counter_regular + "\nDATACENTER = " + this.counter_dc + "\nINTER = " + this.counter_inter + "\n");
+//    	System.out.println("LAST STATISTICS FAIL\nREGULAR = " + this.fail_regular + "\nDATACENTER = " + this.fail_dc + "\nINTER = " + this.fail_inter + "\n");
 	}
 	
 	/**
@@ -324,9 +337,15 @@ public class MyStatistics {
             
             ectrans += flow.getDuration() *( flow.getSlotList().size()-1) * Modulations.getPowerConsumption(flow.getModulationLevel());
            
-            
-            
-            
+            switch (flow.getConnectionType()) {
+	    		case 0:		// Node to Node
+	    			this.counter_regular += 1;
+	    		case 1:		// DC to DC
+	    			this.counter_dc += 1;	    			
+	    		case 2:		// Node to DC
+	    			this.counter_inter += 1;
+    		}
+
             
             numberOfUsedTransponders[flow.getSource()][flow.getDestination()]++;
         }
@@ -359,6 +378,15 @@ public class MyStatistics {
             this.blockedPairsDiff[flow.getSource()][flow.getDestination()][cos]++;
             this.blockedBandwidthPairs[flow.getSource()][flow.getDestination()] += flow.getRate();
             this.blockedBandwidthPairsDiff[flow.getSource()][flow.getDestination()][cos] += flow.getRate();
+            
+            switch (flow.getConnectionType()) {
+				case 0:		// Node to Node
+					this.fail_regular += 1;
+				case 1:		// DC to DC
+					this.fail_dc += 1;	    			
+				case 2:		// Node to DC
+					this.fail_inter += 1;
+		}
         }
     }
     

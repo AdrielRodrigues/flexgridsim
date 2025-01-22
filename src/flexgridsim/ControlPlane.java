@@ -37,6 +37,10 @@ public class ControlPlane implements ControlPlaneForRSA {
     private Tracer tr = Tracer.getTracerObject();
     private MyStatistics st = MyStatistics.getMyStatisticsObject();
     
+    
+//    public void last () {
+//    	System.out.print(this.rsa.get_counter());
+//    }
 	/**
 	 * Creates a new ControlPlane object.
 	 *

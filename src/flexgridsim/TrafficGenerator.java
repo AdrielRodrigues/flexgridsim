@@ -33,6 +33,10 @@ public class TrafficGenerator {
     private double[] minSize;
     private double[] maxSize;
     private NodeList fileSizes;
+    
+    private int counter_regular = 0;
+    private int counter_dc = 0;
+    private int counter_inter = 0;
 
     /**
      * Creates a new TrafficGenerator object.
@@ -124,7 +128,7 @@ public class TrafficGenerator {
         double meanArrivalTime = (meanHoldingTime * (meanRate / (double) maxRate)) / load;
 
         //Generate events
-        int type, src, dst;
+        int type, src = 0, dst = 0;
         double time = 0.0;
         int id = 0;
         int numNodes = pt.getNumNodes();
@@ -135,16 +139,50 @@ public class TrafficGenerator {
         dist4 = new Distribution(4, seed);
 
         int numDataCenters = 2;
-        int[] dataCenterNodes = positioningDC(pt.getWeightedGraph(), numDataCenters);;
-
+        int[] dataCenterNodes = positioningDC(pt.getWeightedGraph(), numDataCenters);
+//        System.out.println("DATACENTERS = " + dataCenterNodes[0] + " " + dataCenterNodes[1]);
+        
         for (int j = 0; j < calls; j++) {
-//        	System.out.println(j);
 
         	int connectionType = 0;
         	int nRequest = 0;
         	
-//        	type = weightVector[dist1.nextInt(TotalWeight)];
-//            src = dst = dist2.nextInt(numNodes);
+        	type = weightVector[dist1.nextInt(TotalWeight)];
+            
+        	double probability = dist2.nextDouble();
+
+        	if (probability <= 0.1) {
+        		// DC to DC
+        		src = dst = dataCenterNodes[dist2.nextInt(numDataCenters)];
+        		while (src == dst) {
+        			int index = dist2.nextInt(numDataCenters);
+        			dst = dataCenterNodes[index];
+        			connectionType = 2;
+        		}
+        	}
+        	if (probability > 0.1 & probability <= 0.3) {
+        		// Inter
+        		src = dst = dist2.nextInt(numNodes);
+        		if ((src == dataCenterNodes[0]) || (src == dataCenterNodes[1])) {
+        			while (src == dst) {
+        				dst = dist2.nextInt(numNodes);
+        			}        			
+        		} else {
+        			int index = dist2.nextInt(numDataCenters);
+        			dst = dataCenterNodes[index];
+        		}
+                connectionType = 1;
+        	}
+        	if (probability > 0.3 & probability <= 1) {
+        		// Should comprehend all requests]
+        		 src = dst = dist2.nextInt(numNodes);
+                 while (src == dst) {
+                     dst = dist2.nextInt(numNodes);
+                 }
+                 connectionType = 0;
+        	}
+        	
+//        	src = dst = dist2.nextInt(numNodes);
 //            while (src == dst) {
 //            	if ((isDataCenterNetwork) && (dist2.nextDouble() <= 0.3)) { // DC Probability
 //            		int index = dist2.nextInt(numDataCenters);
@@ -155,19 +193,38 @@ public class TrafficGenerator {
 //            	}
 //            }
             
-            type = weightVector[dist1.nextInt(TotalWeight)];
-            src = dst = dist2.nextInt(numNodes);
+//            type = weightVector[dist1.nextInt(TotalWeight)];
+//            src = dst = dist2.nextInt(numNodes);
+//            
+//            while (src == dst) {
+//            	int index = dist2.nextInt(numDataCenters);
+//            	dst = dataCenterNodes[index];
+//            	connectionType = 1; // DC involved
+//            }
             
-            while (src == dst) {
-            	int index = dist2.nextInt(numDataCenters);
-            	dst = dataCenterNodes[index];
-            	connectionType = 1; // DC involved
+            if (connectionType == 0) {
+            	this.counter_regular += 1;
+            } else if (connectionType == 1) {
+            	this.counter_inter += 1;
+            } else if (connectionType == 2) {
+            	this.counter_dc += 1;
             }
             
-            double holdingTime;
-
+            // MANUALLY ADDING holdingTime differentiation for DataCenter and Regular Flows
+            double holdingTime, baseHoldingTime, scaledHoldingTime;
+            if (connectionType == 2){
+            	baseHoldingTime= 5.0;
+            } else {
+            	baseHoldingTime = 1.0;
+            }
+            	
             // Maybe think about how much time it takes according to the content
-            holdingTime = dist4.nextExponential(callsTypesInfo[type].getHoldingTime());
+//            scaledHoldingTime = callsTypesInfo[type].getHoldingTime();
+//            scaledHoldingTime = baseHoldingTime * (callsTypesInfo[type].getRate() / 25);
+            scaledHoldingTime = baseHoldingTime;
+//            System.out.println(scaledHoldingTime);
+            
+            holdingTime = dist4.nextExponential(scaledHoldingTime);
 
             Flow newFlow = new Flow(id, src, dst, time, callsTypesInfo[type].getRate(), holdingTime, callsTypesInfo[type].getCOS(), time+(holdingTime*0.5));
             newFlow.setDataRequest(nRequest);
@@ -180,6 +237,7 @@ public class TrafficGenerator {
             events.addEvent(event);
             id++;
     	}
+//        System.out.println("DC = " + this.counter_dc + "\nInter = " + this.counter_inter + "\nRegular = " + this.counter_regular + "\n");
     }
     
     /**
