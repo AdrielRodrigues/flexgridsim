@@ -149,5 +149,8 @@
     <graph name="ee" dots-file="SBRC-pan-ee.dat"/>
     <graph name="pc" dots-file="SBRC-pan-pc.dat"/>
     <graph name="avgbps" dots-file="SBRC-pan-avgbps.dat"/>
+    <graph name="dcblock" dots-file="SBRC-pan-dcblock.dat"/>
+    <graph name="regularblock" dots-file="SBRC-pan-regularblock.dat"/>
+    <graph name="interblock" dots-file="SBRC-pan-interblock.dat"/>
     </graphs>
 </flexgridsim>

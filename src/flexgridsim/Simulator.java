@@ -83,6 +83,7 @@ public class Simulator {
 	        OutputManager gp = new OutputManager((Element) doc.getElementsByTagName("graphs").item(0));
 
 	        for (int seed = 1; seed <= numberOfSimulations; seed++) {
+//	        	System.out.println("== Start of Simulation " + seed + " ==");
 
 	            long begin = System.currentTimeMillis();
 		            
@@ -98,7 +99,7 @@ public class Simulator {
 	            if (Simulator.verbose) {
 	                System.out.println("(1) Loading physical topology information...");
 	            }
-
+//	            System.out.println("(1) Loading Physical Topology");
 	            PhysicalTopology pt = new PhysicalTopology((Element) doc.getElementsByTagName("physical-topology").item(0));
 
 	            if (Simulator.verbose) {
@@ -118,6 +119,7 @@ public class Simulator {
 	                System.out.println("(2) Loading virtual topology information...");
 	            }
 
+//	            System.out.println("(2) Loading Virtual Topology");
 	            VirtualTopology vt = new VirtualTopology((Element) doc.getElementsByTagName("virtual-topology").item(0), pt);
 	            if (Simulator.verbose) {
 	                System.out.println(vt);
@@ -134,10 +136,12 @@ public class Simulator {
 	            if (Simulator.verbose) {
 	                System.out.println("(3) Loading traffic information...");
 	            }
- 
+	            
+//	            System.out.println("(3) Generating Traffic");
 	            EventScheduler events = new EventScheduler();
 	            TrafficGenerator traffic = new TrafficGenerator((Element) doc.getElementsByTagName("traffic").item(0), forcedLoad);
 	            traffic.generateTraffic(pt, events, seed);
+//	            System.out.println("(3) Finish Generating Traffic");
 	
 	            if (Simulator.verbose) {
 	                System.out.println("(3) Done. (" + Float.toString((float) ((float) (System.currentTimeMillis() - begin) / (float) 1000)) + " sec)\n");
@@ -217,6 +221,7 @@ public class Simulator {
 	            st.finish();
 	            if (Simulator.trace == true)
 	            	tr.finish();
+//	            System.out.println("== End of Simulation " + seed + " ==");
 	        }
 	        gp.writeAllToFiles();
         } catch (SAXParseException err) {

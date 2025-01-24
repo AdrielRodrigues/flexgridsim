@@ -95,5 +95,8 @@
     <graph name="avgbps" dots-file="DC-nsf-avgbps.dat"/>
     <graph name="su" dots-file="DC-nsf-spectrum-utilization.dat"/>
     <graph name="percent" dots-file="DC-nsf-modulations_percentage.dat"/>
+    <graph name="dcblock" dots-file="DC-nsf-dcblock.dat"/>
+    <graph name="regularblock" dots-file="DC-nsf-regularblock.dat"/>
+    <graph name="interblock" dots-file="DC-nsf-interblock.dat"/>
     </graphs>
 </flexgridsim>

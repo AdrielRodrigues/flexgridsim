@@ -6,6 +6,8 @@ package flexgridsim;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.w3c.dom.*;
 
@@ -140,6 +142,9 @@ public class TrafficGenerator {
 
         int numDataCenters = 2;
         int[] dataCenterNodes = positioningDC(pt.getWeightedGraph(), numDataCenters);
+        while (dataCenterNodes[0] == dataCenterNodes[1]) {
+        	dataCenterNodes = positioningDC(pt.getWeightedGraph(), numDataCenters);
+        }
 //        System.out.println("DATACENTERS = " + dataCenterNodes[0] + " " + dataCenterNodes[1]);
         
         for (int j = 0; j < calls; j++) {
@@ -150,6 +155,7 @@ public class TrafficGenerator {
         	type = weightVector[dist1.nextInt(TotalWeight)];
             
         	double probability = dist2.nextDouble();
+//        	System.out.println("System output probability = " + probability);
 
         	if (probability <= 0.1) {
         		// DC to DC
@@ -158,8 +164,10 @@ public class TrafficGenerator {
         			int index = dist2.nextInt(numDataCenters);
         			dst = dataCenterNodes[index];
         			connectionType = 2;
+//        			System.out.println("DC one = " + dataCenterNodes[0] + " DC two = " + dataCenterNodes[1] + " Source = " + src + " Destination = " + dst);
         		}
         	}
+//        	System.out.println("Past first loop - DC");
         	if (probability > 0.1 & probability <= 0.3) {
         		// Inter
         		src = dst = dist2.nextInt(numNodes);
@@ -173,6 +181,7 @@ public class TrafficGenerator {
         		}
                 connectionType = 1;
         	}
+//        	System.out.println("Past second loop - NodeDC");
         	if (probability > 0.3 & probability <= 1) {
         		// Should comprehend all requests]
         		 src = dst = dist2.nextInt(numNodes);
@@ -181,6 +190,7 @@ public class TrafficGenerator {
                  }
                  connectionType = 0;
         	}
+//        	System.out.println("Past third loop - Regular");
         	
 //        	src = dst = dist2.nextInt(numNodes);
 //            while (src == dst) {
@@ -271,6 +281,80 @@ public class TrafficGenerator {
         int[] centroids = new int[k];
         for (int i = 0; i < k; i++) {
             centroids[i] = random.nextInt(n);
+        }
+
+        int[] labels = new int[n];
+        boolean changed;
+
+        do {
+            changed = false;
+
+            // Assign each node to the nearest centroid
+            for (int i = 0; i < n; i++) {
+                double minDistance = Double.MAX_VALUE;
+                int closestCentroid = -1;
+
+                for (int j = 0; j < k; j++) {
+                    double distance = distanceMatrix[i][centroids[j]];
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestCentroid = centroids[j];
+                    }
+                }
+
+                if (labels[i] != closestCentroid) {
+                    labels[i] = closestCentroid;
+                    changed = true;
+                }
+            }
+
+            // Update centroids
+            for (int j = 0; j < k; j++) {
+                double minSumDistance = Double.MAX_VALUE;
+                int newCentroid = centroids[j];
+
+                for (int i = 0; i < n; i++) {
+                    double sumDistance = 0;
+                    for (int l = 0; l < n; l++) {
+                        if (labels[l] == centroids[j]) {
+                            sumDistance += distanceMatrix[i][l];
+                        }
+                    }
+
+                    if (sumDistance < minSumDistance) {
+                        minSumDistance = sumDistance;
+                        newCentroid = i;
+                    }
+                }
+
+                centroids[j] = newCentroid;
+            }
+
+        } while (changed);
+
+        return centroids;
+    }
+    public int[] positioningDC2(WeightedGraph g, int k) {
+        double[][] distanceMatrix = new double[g.getNumNodes()][g.getNumNodes()];
+        for (int i = 0; i < g.getNumNodes(); i++) {
+            for (int j = 0; j < g.getNumNodes(); j++) {
+                distanceMatrix[i][j] = g.getWeight(i, j);
+            }
+        }
+
+        int n = distanceMatrix.length;
+        Random random = new Random();
+
+        // Initialize centroids (datacenter positions) randomly with unique values
+        int[] centroids = new int[k];
+        Set<Integer> selectedCentroids = new HashSet<>();
+        for (int i = 0; i < k; i++) {
+            int candidate;
+            do {
+                candidate = random.nextInt(n);
+            } while (selectedCentroids.contains(candidate));
+            centroids[i] = candidate;
+            selectedCentroids.add(candidate);
         }
 
         int[] labels = new int[n];

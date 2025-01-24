@@ -160,6 +160,11 @@ public class MyStatistics {
 		plotter.addDotToGraph("avgbps", load, avgBitsPerSymbol);
 		plotter.addDotToGraph("mbbr", load, ((float) blockedBandwidth) / ((float) requiredBandwidth));
 		plotter.addDotToGraph("bp", load, ((float) blocked) / ((float) arrivals) * 100);
+		
+		plotter.addDotToGraph("dcblock", load, ((float) this.fail_dc) / ((float) this.counter_dc) * 100);
+		plotter.addDotToGraph("regularblock", load, ((float) this.fail_regular) / ((float) this.counter_regular) * 100);
+		plotter.addDotToGraph("interblock", load, ((float) this.fail_inter) / ((float) this.counter_inter) * 100);
+		
 		int count = 0;
         float bbr, jfi, sum1 = 0, sum2 = 0;
         if (blocked == 0) {

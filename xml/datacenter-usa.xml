@@ -146,5 +146,8 @@
     <graph name="avgbps" dots-file="DC-usa-avgbps.dat"/>
     <graph name="su" dots-file="DC-usa-spectrum-utilization.dat"/>
     <graph name="percent" dots-file="DC-usa-modulations_percentage.dat"/>
+    <graph name="dcblock" dots-file="DC-usa-dcblock.dat"/>
+    <graph name="regularblock" dots-file="DC-usa-regularblock.dat"/>
+    <graph name="interblock" dots-file="DC-usa-interblock.dat"/>
     </graphs>
 </flexgridsim>

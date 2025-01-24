@@ -147,5 +147,8 @@
     <graph name="ee" dots-file="SBRC-usa-ee.dat"/>
     <graph name="pc" dots-file="SBRC-usa-pc.dat"/>
     <graph name="avgbps" dots-file="SBRC-usa-avgbps.dat"/>
+    <graph name="dcblock" dots-file="SBRC-usa-dcblock.dat"/>
+    <graph name="regularblock" dots-file="SBRC-usa-regularblock.dat"/>
+    <graph name="interblock" dots-file="SBRC-usa-interblock.dat"/>
     </graphs>
 </flexgridsim>

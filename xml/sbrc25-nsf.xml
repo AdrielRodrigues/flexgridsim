@@ -93,5 +93,8 @@
     <graph name="ee" dots-file="SBRC-25-nsf-ee.dat"/>
     <graph name="pc" dots-file="SBRC-25-nsf-pc.dat"/>
     <graph name="avgbps" dots-file="SBRC-25-nsf-avgbps.dat"/>
+    <graph name="dcblock" dots-file="SBRC-25-nsf-dcblock.dat"/>
+    <graph name="regularblock" dots-file="SBRC-25-nsf-regularblock.dat"/>
+    <graph name="interblock" dots-file="SBRC-25-nsf-interblock.dat"/>
     </graphs>	
 </flexgridsim>

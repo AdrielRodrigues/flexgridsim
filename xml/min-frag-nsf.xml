@@ -95,5 +95,8 @@
     <graph name="avgbps" dots-file="MINFRAG-nsf-graph-avgbps.dat"/>
     <graph name="su" dots-file="MINFRAG-nsf-spectrum-utilization.dat"/>
     <graph name="percent" dots-file="MINFRAG-nsf-modulations_percentage.dat"/>
+    <graph name="dcblock" dots-file="MINFRAG-nsf-dcblock.dat"/>
+    <graph name="regularblock" dots-file="MINFRAG-nsf-regularblock.dat"/>
+    <graph name="interblock" dots-file="MINFRAG-nsf-interblock.dat"/>
     </graphs>
 </flexgridsim>

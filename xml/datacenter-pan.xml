@@ -151,5 +151,8 @@
     <graph name="avgbps" dots-file="DC-pan-avgbps.dat"/>
     <graph name="su" dots-file="DC-pan-spectrum-utilization.dat"/>
     <graph name="percent" dots-file="DC-pan-modulations_percentage.dat"/>
+    <graph name="dcblock" dots-file="DC-pan-dcblock.dat"/>
+    <graph name="regularblock" dots-file="DC-pan-regularblock.dat"/>
+    <graph name="interblock" dots-file="DC-pan-interblock.dat"/>
     </graphs>
 </flexgridsim>
