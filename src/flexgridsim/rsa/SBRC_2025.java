@@ -16,6 +16,10 @@ import flexgridsim.util.KShortestPaths;
 import flexgridsim.util.Modulations;
 import flexgridsim.util.MultiGraph;
 import flexgridsim.util.WeightedGraph;
+import flexgridsim.util.Yen;
+
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * @author AdrielRodrigues
@@ -328,6 +332,31 @@ public class SBRC_2025 implements RSA  {
 	}
 	
 	public Path getKShortestPath(WeightedGraph G,int src, int dst, int demand, boolean overlap){
+		KShortestPaths kShortestPaths = new KShortestPaths();
+		int[][] kPaths = kShortestPaths.dijkstraKShortestPaths(G, src, dst, 3);
+		if(kPaths==null)
+			return null;
+		Arrays.sort(kPaths, (a, b) -> Integer.compare(b.length, a.length));
+		int []links;
+		ArrayList<Slot> channel = new ArrayList<Slot>();
+		
+		for (int i = 0; i < kPaths.length; i++) {
+			if (kPaths[i].length > 1){
+				links = new int[kPaths[i].length - 1];
+				for (int j = 0; j < kPaths[i].length - 1; j++) {
+					links[j] = pt.getLink(kPaths[i][j], kPaths[i][j + 1]).getID();
+				}
+				channel=getSimilarSlotsInLinks(links,overlap, demand);
+				if(channel!=null){
+					return new Path(links, channel);
+				}	
+			} else {
+				continue;
+			}
+		}
+		return null;
+	}
+	public Path getYenKShortestPath(WeightedGraph G,int src, int dst, int demand, boolean overlap){
 		KShortestPaths kShortestPaths = new KShortestPaths();
 		int[][] kPaths = kShortestPaths.dijkstraKShortestPaths(G, src, dst, 3);
 		if(kPaths==null)
