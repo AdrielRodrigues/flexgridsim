@@ -74,6 +74,9 @@ public class MSP implements RSA {
 		if (id >= 0 || idc >= 0) {
 			flow.setLinks(path.getLinks());
 			flow.setSlotList(path.getSlotList());
+			
+			flow.setModulationLevel(Modulations.getModulationLevel(pt.getSlotCapacity()));
+			
 			ArrayList<LightPath> lightpath = new ArrayList<>(); 
 			lightpath.add(vt.getLightpath(id));
 			
