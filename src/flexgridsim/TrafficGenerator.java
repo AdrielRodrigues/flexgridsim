@@ -109,7 +109,7 @@ public class TrafficGenerator {
 
 	public void generateTraffic(PhysicalTopology pt, EventScheduler events, int seed) {
 		
-		boolean isDataCenterNetwork = true;
+//		boolean isDataCenterNetwork = true;
 
         // Compute the weight vector
         int[] weightVector = new int[TotalWeight];
@@ -140,56 +140,56 @@ public class TrafficGenerator {
         dist3 = new Distribution(3, seed);
         dist4 = new Distribution(4, seed);
 
-        int numDataCenters = 2;
-        int[] dataCenterNodes = positioningDC(pt.getWeightedGraph(), numDataCenters);
-        while (dataCenterNodes[0] == dataCenterNodes[1]) {
-        	dataCenterNodes = positioningDC(pt.getWeightedGraph(), numDataCenters);
-        }
+//        int numDataCenters = 2;
+//        int[] dataCenterNodes = positioningDC(pt.getWeightedGraph(), numDataCenters);
+//        while (dataCenterNodes[0] == dataCenterNodes[1]) {
+//        	dataCenterNodes = positioningDC(pt.getWeightedGraph(), numDataCenters);
+//        }
 //        System.out.println("DATACENTERS = " + dataCenterNodes[0] + " " + dataCenterNodes[1]);
         
         for (int j = 0; j < calls; j++) {
 
-        	int connectionType = 0;
-        	int nRequest = 0;
+//        	int connectionType = 0;
+//        	int nRequest = 0;
         	
         	type = weightVector[dist1.nextInt(TotalWeight)];
             
-        	double probability = dist2.nextDouble();
+//        	double probability = dist2.nextDouble();
 //        	System.out.println("System output probability = " + probability);
 
-        	if (probability <= 0.1) {
-        		// DC to DC
-        		src = dst = dataCenterNodes[dist2.nextInt(numDataCenters)];
-        		while (src == dst) {
-        			int index = dist2.nextInt(numDataCenters);
-        			dst = dataCenterNodes[index];
-        			connectionType = 2;
-//        			System.out.println("DC one = " + dataCenterNodes[0] + " DC two = " + dataCenterNodes[1] + " Source = " + src + " Destination = " + dst);
-        		}
-        	}
-//        	System.out.println("Past first loop - DC");
-        	if (probability > 0.1 & probability <= 0.3) {
-        		// Inter
-        		src = dst = dist2.nextInt(numNodes);
-        		if ((src == dataCenterNodes[0]) || (src == dataCenterNodes[1])) {
-        			while (src == dst) {
-        				dst = dist2.nextInt(numNodes);
-        			}        			
-        		} else {
-        			int index = dist2.nextInt(numDataCenters);
-        			dst = dataCenterNodes[index];
-        		}
-                connectionType = 1;
-        	}
-//        	System.out.println("Past second loop - NodeDC");
-        	if (probability > 0.3 & probability <= 1) {
-        		// Should comprehend all requests]
-        		 src = dst = dist2.nextInt(numNodes);
-                 while (src == dst) {
-                     dst = dist2.nextInt(numNodes);
-                 }
-                 connectionType = 0;
-        	}
+//        	if (probability <= 0.1) {
+//        		// DC to DC
+//        		src = dst = dataCenterNodes[dist2.nextInt(numDataCenters)];
+//        		while (src == dst) {
+//        			int index = dist2.nextInt(numDataCenters);
+//        			dst = dataCenterNodes[index];
+//        			connectionType = 2;
+////        			System.out.println("DC one = " + dataCenterNodes[0] + " DC two = " + dataCenterNodes[1] + " Source = " + src + " Destination = " + dst);
+//        		}
+//        	}
+////        	System.out.println("Past first loop - DC");
+//        	if (probability > 0.1 & probability <= 0.3) {
+//        		// Inter
+//        		src = dst = dist2.nextInt(numNodes);
+//        		if ((src == dataCenterNodes[0]) || (src == dataCenterNodes[1])) {
+//        			while (src == dst) {
+//        				dst = dist2.nextInt(numNodes);
+//        			}        			
+//        		} else {
+//        			int index = dist2.nextInt(numDataCenters);
+//        			dst = dataCenterNodes[index];
+//        		}
+//                connectionType = 1;
+//        	}
+////        	System.out.println("Past second loop - NodeDC");
+//        	if (probability > 0.3 & probability <= 1) {
+//        		// Should comprehend all requests]
+//        		 src = dst = dist2.nextInt(numNodes);
+//                 while (src == dst) {
+//                     dst = dist2.nextInt(numNodes);
+//                 }
+//                 connectionType = 0;
+//        	}
 //        	System.out.println("Past third loop - Regular");
         	
 //        	src = dst = dist2.nextInt(numNodes);
@@ -212,33 +212,44 @@ public class TrafficGenerator {
 //            	connectionType = 1; // DC involved
 //            }
             
-            if (connectionType == 0) {
-            	this.counter_regular += 1;
-            } else if (connectionType == 1) {
-            	this.counter_inter += 1;
-            } else if (connectionType == 2) {
-            	this.counter_dc += 1;
-            }
+//            if (connectionType == 0) {
+//            	this.counter_regular += 1;
+//            } else if (connectionType == 1) {
+//            	this.counter_inter += 1;
+//            } else if (connectionType == 2) {
+//            	this.counter_dc += 1;
+//            }
             
             // MANUALLY ADDING holdingTime differentiation for DataCenter and Regular Flows
-            double holdingTime, baseHoldingTime, scaledHoldingTime;
-            if (connectionType == 2){
-            	baseHoldingTime= 5.0;
-            } else {
-            	baseHoldingTime = 1.0;
-            }
+//            double holdingTime, baseHoldingTime, scaledHoldingTime;
+//            if (connectionType == 2){
+//            	baseHoldingTime= 5.0;
+//            } else {
+//            	baseHoldingTime = 1.0;
+//            }
             	
             // Maybe think about how much time it takes according to the content
 //            scaledHoldingTime = callsTypesInfo[type].getHoldingTime();
 //            scaledHoldingTime = baseHoldingTime * (callsTypesInfo[type].getRate() / 25);
-            scaledHoldingTime = baseHoldingTime;
+//            scaledHoldingTime = baseHoldingTime;
 //            System.out.println(scaledHoldingTime);
             
-            holdingTime = dist4.nextExponential(scaledHoldingTime);
+        	src = dst = dist2.nextInt(numNodes);
+//        	FIXED NODES
+        	while (src > 49)
+        		src = dist2.nextInt(numNodes);
+            while (src == dst) {
+                dst = dist2.nextInt(numNodes);
+            }
+
+            double holdingTime;
+//            holdingTime = dist4.nextExponential(scaledHoldingTime);
+            holdingTime = dist4.nextExponential(callsTypesInfo[type].getHoldingTime());
+
 
             Flow newFlow = new Flow(id, src, dst, time, callsTypesInfo[type].getRate(), holdingTime, callsTypesInfo[type].getCOS(), time+(holdingTime*0.5));
-            newFlow.setDataRequest(nRequest);
-            newFlow.setConnectionType(connectionType);
+//            newFlow.setDataRequest(nRequest);
+//            newFlow.setConnectionType(connectionType);
             Event event;
             event = new FlowArrivalEvent(time, newFlow);
             time += dist3.nextExponential(meanArrivalTime);
@@ -247,7 +258,6 @@ public class TrafficGenerator {
             events.addEvent(event);
             id++;
     	}
-//        System.out.println("DC = " + this.counter_dc + "\nInter = " + this.counter_inter + "\nRegular = " + this.counter_regular + "\n");
     }
     
     /**

@@ -24,7 +24,7 @@ import flexgridsim.util.WeightedGraph;
  *
  */
 
-public class FifthGen implements RSA  {
+public class FifthGenNoMod implements RSA  {
 	private PhysicalTopology pt;
 	private VirtualTopology vt;
 	private ControlPlaneForRSA cp;
@@ -67,27 +67,20 @@ public class FifthGen implements RSA  {
 
 		int mod=5;
 		int modulation=0;
-		do{
-			// Demand may be different
-			demandInSlots = (int) Math.ceil(flow.getRate() / (double) Modulations.getBandwidth(mod)) + guardBand;
-			
-			if (cos == 0) {
-				path = findFog(flow, cos, demandInSlots);
-				if (path == null)
-					path = upFog(flow, cos, demandInSlots);
-			} else {
-				path = findCloud(flow, cos, demandInSlots);
-				if (path == null) {
-					path = upCloud(flow, cos, demandInSlots);
-				}
+		
+		// Demand may be different
+		demandInSlots = (int) Math.ceil(flow.getRate() / (double) Modulations.getBandwidth(modulation)) + guardBand;
+		
+		if (cos == 0) {
+			path = findFog(flow, cos, demandInSlots);
+			if (path == null)
+				path = upFog(flow, cos, demandInSlots);
+		} else {
+			path = findCloud(flow, cos, demandInSlots);
+			if (path == null) {
+				path = upCloud(flow, cos, demandInSlots);
 			}
-
-			if(path!=null)
-				modulation=Modulations.getModulationByDistance(getPhysicalDistance(path.getLinks()));
-			else
-				modulation =-1;
-			mod--;
-		}while(mod>-1 &&modulation!=-1 && modulation!=mod+1);
+			}
 
 		// Did it found a single path?
 		if (path == null) {

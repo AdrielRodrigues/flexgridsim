@@ -122,6 +122,10 @@ public class Flow {
         return dst;
     }
     
+    public void setDestination(int dst) {
+        this.dst = dst;
+    }
+    
     /**
      * Retrieves the required bandwidth for a given Flow.
      * 

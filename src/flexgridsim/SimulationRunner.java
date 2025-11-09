@@ -29,7 +29,7 @@ public class SimulationRunner {
 	        tr.add(event);
 	        st.addEvent(event);
             cp.newEvent(event, last);
-//            System.out.println(seed + " - " + a++);
+            //System.out.println(a++);
         }
 //        cp.last();
         System.out.println(st.getblocked());

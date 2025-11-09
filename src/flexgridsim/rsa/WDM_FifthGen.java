@@ -24,7 +24,7 @@ import flexgridsim.util.WeightedGraph;
  *
  */
 
-public class FifthGen implements RSA  {
+public class WDM_FifthGen implements RSA  {
 	private PhysicalTopology pt;
 	private VirtualTopology vt;
 	private ControlPlaneForRSA cp;
@@ -36,6 +36,7 @@ public class FifthGen implements RSA  {
 	private ArrayList<Integer> fogs = new ArrayList<>();
 	
 	Random random = new Random();
+
 
 	@Override
 	public void flowDeparture(Flow flow) {
@@ -62,43 +63,30 @@ public class FifthGen implements RSA  {
 			guardBand=0;
 		
 		int demandInSlots;
+		Path path = null;
+		
+		int mod = 0;
+		demandInSlots = (int) Math.ceil(flow.getRate() / (double) Modulations.getBandwidth(mod)) + guardBand;
+		
 		int cos = flow.getCOS();
-		Path path;
-
-		int mod=5;
-		int modulation=0;
-		do{
-			// Demand may be different
-			demandInSlots = (int) Math.ceil(flow.getRate() / (double) Modulations.getBandwidth(mod)) + guardBand;
-			
-			if (cos == 0) {
-				path = findFog(flow, cos, demandInSlots);
-				if (path == null)
-					path = upFog(flow, cos, demandInSlots);
-			} else {
-				path = findCloud(flow, cos, demandInSlots);
-				if (path == null) {
-					path = upCloud(flow, cos, demandInSlots);
-				}
+		
+		if (cos == 0) {
+			path = findFog(flow, cos, demandInSlots);
+			if (path == null)
+				path = upFog(flow, cos, demandInSlots);
+		} else {
+			path = findCloud(flow, cos, demandInSlots);
+			if (path == null) {
+				path = upCloud(flow, cos, demandInSlots);
 			}
-
-			if(path!=null)
-				modulation=Modulations.getModulationByDistance(getPhysicalDistance(path.getLinks()));
-			else
-				modulation =-1;
-			mod--;
-		}while(mod>-1 &&modulation!=-1 && modulation!=mod+1);
-
-		// Did it found a single path?
+		}
 		if (path == null) {
 			cp.blockFlow(flow.getID());
 			return;
 		}
-
-		managementNode(flow, path, modulation, id);
+		managementNode(flow, path, mod, id);
 	}
 	
-
 	private Path findCloud(Flow flow, int cos, int demandInSlots) {
 		Path tempPath;
 		for (int cloud : this.cos) {
@@ -182,6 +170,7 @@ public class FifthGen implements RSA  {
 		}
 		return null;
 	}
+	
 	
 //	Still working as the default, but intended to treat differentially each kind of connection
 	private void managementDC (Flow flow, Path path, int modulation, long id) {
@@ -415,7 +404,7 @@ public class FifthGen implements RSA  {
 		}
 		return new Path(links, channel);
 	}
-	
+
 	public Path getKShortestPath(WeightedGraph G,int src, int dst, int cos, int demand, boolean overlap){
 		KShortestPaths kShortestPaths = new KShortestPaths();
 		int[][] kPaths = kShortestPaths.dijkstraKShortestPaths(G, src, dst, 3);
@@ -430,7 +419,7 @@ public class FifthGen implements RSA  {
 				for (int j = 0; j < kPaths[i].length - 1; j++) {
 					links[j] = pt.getLink(kPaths[i][j], kPaths[i][j + 1]).getID();
 				}
-				channel=getSimilarSlotsInLinks(links,overlap, demand);
+				channel=getSimilarSlotsInLinks(links, cos, overlap, demand);
 				if(channel!=null){
 					return new Path(links, channel);
 				}	
@@ -441,12 +430,29 @@ public class FifthGen implements RSA  {
 		return null;
 	}
 	
+	
 	public  ArrayList<Slot> getSimilarSlotsInLinks(int []links, int cos, boolean sharing, int demandInSlots) {
 		ArrayList<Slot> channel = new ArrayList<Slot>();
 		int firstSlot;
 		int lastSlot;
 		int core;
-		for (int i = 0; i < pt.getNumSlots()-demandInSlots; i++) {
+		
+		int regionStart = 0;
+		int regionFinish = pt.getNumSlots();
+		
+		// Política de restrição
+		if (cos == 0) {
+			regionStart = 0;
+			regionFinish = pt.getNumSlots() / 4;
+		} else if (cos == 1) {
+			regionStart = pt.getNumSlots() / 4;
+			regionFinish = 2 * (pt.getNumSlots()/4);
+		} else if (cos == 2) {
+			regionStart = 2 * (pt.getNumSlots()/4);
+			regionFinish = pt.getNumSlots();
+		}
+		
+		for (int i = regionStart; i < regionFinish-demandInSlots; i++) {
 			firstSlot = i;
 			lastSlot = i + demandInSlots - 1;
 			core=usingSameCore(firstSlot, lastSlot, links, sharing);
@@ -463,6 +469,8 @@ public class FifthGen implements RSA  {
 		}	
 		return null;
 	}
+	
+	
 	
 	public Path getKShortestPath(WeightedGraph G,int src, int dst, int demand, boolean overlap){
 		KShortestPaths kShortestPaths = new KShortestPaths();
@@ -488,9 +496,6 @@ public class FifthGen implements RSA  {
 		}
 		return null;
 	}
-	
-	
-	
 	public  ArrayList<Slot> getSimilarSlotsInLinks(int []links, boolean sharing, int demandInSlots) {
 		ArrayList<Slot> channel = new ArrayList<Slot>();
 		int firstSlot;
