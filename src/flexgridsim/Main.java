@@ -3,6 +3,9 @@
  * and open the template in the editor.
  */
 package flexgridsim;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 /**
  * 
  * 
@@ -87,10 +90,13 @@ public class Main {
 
 		simConfigFile = args[0];
 		seed = Integer.parseInt(args[1]);
+		
+//		String sim_folder = "timestamp_01";
+		String sim_folder= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
                 
 		for (double load = minload; load <= maxload; load += step) {
 			flexgridsim = new Simulator();
-			flexgridsim.Execute(simConfigFile, trace, verbose, failure, load, seed/*, gravarArq*/);
+			flexgridsim.Execute(simConfigFile, trace, verbose, failure, load, seed, sim_folder);
 		}
 	}
 }

@@ -41,7 +41,7 @@ public class Simulator {
      * @param forcedLoad range of loads for which several simulations are automated; if not specified, load is taken from the XML file
      * @param numberOfSimulations a number in the interval [1,25] that defines up to 25 different random simulations
      */
-    public void Execute(String simConfigFile, boolean trace, boolean verbose, boolean failure, double forcedLoad, int numberOfSimulations/*, PrintWriter gravarArq*/) {
+    public void Execute(String simConfigFile, boolean trace, boolean verbose, boolean failure, double forcedLoad, int numberOfSimulations, String sim_folder) {
 
         Simulator.verbose = verbose;
         Simulator.trace = trace;
@@ -80,7 +80,8 @@ public class Simulator {
 	            System.exit(0);
 	        }
 
-	        OutputManager gp = new OutputManager((Element) doc.getElementsByTagName("graphs").item(0));
+	        OutputManager gp = new OutputManager((Element) doc.getElementsByTagName("graphs").item(0), sim_folder);
+	        
 
 	        for (int seed = 1; seed <= numberOfSimulations; seed++) {
 //	        	System.out.println("== Start of Simulation " + seed + " ==");

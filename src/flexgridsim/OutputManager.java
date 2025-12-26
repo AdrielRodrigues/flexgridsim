@@ -19,14 +19,14 @@ public class OutputManager {
 	 *
 	 * @param xml the xml element with the graphs to be plotted
 	 */
-	public OutputManager(Element xml) {
+	public OutputManager(Element xml, String sim_folder) {
 		NodeList graphlist = xml.getElementsByTagName("graph");
 		numberOfGraphs = graphlist.getLength();
 		graphs = new Graph[numberOfGraphs];
 		for (int i = 0; i < numberOfGraphs; i++) {
 			graphs[i] = new Graph(
 					((Element) graphlist.item(i)).getAttribute("name"),
-					((Element) graphlist.item(i)).getAttribute("dots-file"),2);
+					((Element) graphlist.item(i)).getAttribute("dots-file"),2, sim_folder);
 		}
 	}
 	
