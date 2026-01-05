@@ -35,7 +35,7 @@ public class WDM_FifthGen implements RSA  {
 	private ArrayList<Integer> cos = new ArrayList<>();
 	private ArrayList<Integer> fogs = new ArrayList<>();
 	
-	Random random = new Random();
+	private Random random = new Random();
 
 
 	@Override
@@ -87,7 +87,7 @@ public class WDM_FifthGen implements RSA  {
 		managementNode(flow, path, mod, id);
 	}
 	
-	private Path findCloud(Flow flow, int cos, int demandInSlots) {
+	public Path findCloud(Flow flow, int cos, int demandInSlots) {
 		Path tempPath;
 		for (int cloud : this.cos) {
 			tempPath = getKShortestPath(graph, flow.getSource(), cloud, cos, demandInSlots, false);
@@ -105,7 +105,7 @@ public class WDM_FifthGen implements RSA  {
 		return null;
 	}
 	
-	private Path upCloud(Flow flow, int cos, int demandInSlots) {
+	public Path upCloud(Flow flow, int cos, int demandInSlots) {
 		Path tempPath;
 		// Core Nodes
 		for (int i = 80; i < 100; i++) {
@@ -130,7 +130,7 @@ public class WDM_FifthGen implements RSA  {
 		return null;
 	}
 	
-	private Path findFog(Flow flow, int cos, int demandInSlots) {
+	public Path findFog(Flow flow, int cos, int demandInSlots) {
 		Path tempPath;
 		for (int fogNode : this.fogs) {
 			tempPath = getKShortestPath(graph, flow.getSource(), fogNode, cos, demandInSlots, false);
@@ -146,7 +146,7 @@ public class WDM_FifthGen implements RSA  {
 		return null;
 	}
 	
-	private Path upFog(Flow flow, int cos, int demandInSlots) {
+	public Path upFog(Flow flow, int cos, int demandInSlots) {
 		Path tempPath;
 		// Core Nodes
 		for (int i = 50; i < 80; i++) {
@@ -173,7 +173,7 @@ public class WDM_FifthGen implements RSA  {
 	
 	
 //	Still working as the default, but intended to treat differentially each kind of connection
-	private void managementDC (Flow flow, Path path, int modulation, long id) {
+	public void managementDC (Flow flow, Path path, int modulation, long id) {
 		id = vt.createLightpath(path, modulation);
 		ArrayList<LightPath> lightpath = new ArrayList<LightPath>();
 			
@@ -195,7 +195,7 @@ public class WDM_FifthGen implements RSA  {
 		}	
 		return;
 	}
-	private void managementNode (Flow flow, Path path, int modulation, long id) {
+	public void managementNode (Flow flow, Path path, int modulation, long id) {
 		id = vt.createLightpath(path, modulation);
 		ArrayList<LightPath> lightpath = new ArrayList<LightPath>();
 			
@@ -217,7 +217,7 @@ public class WDM_FifthGen implements RSA  {
 		}	
 		return;
 	}
-	private void managementDN (Flow flow, Path path, int modulation, long id) {
+	public void managementDN (Flow flow, Path path, int modulation, long id) {
 		id = vt.createLightpath(path, modulation);
 		ArrayList<LightPath> lightpath = new ArrayList<LightPath>();
 			

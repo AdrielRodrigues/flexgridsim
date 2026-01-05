@@ -5,7 +5,7 @@
 
     <trace file="trace.tr"></trace>
 
-	<traffic calls="10" load="215" max-rate="1000">
+	<traffic calls="3000" load="215" max-rate="1000">
 	  	<calls holding-time="1.0" rate="50" cos="0" weight="1"/>
 	  	<calls holding-time="1.0" rate="80" cos="0" weight="1"/>
         <calls holding-time="1.0" rate="240" cos="1" weight="1"/>
@@ -18,7 +18,7 @@
     </virtual-topology>
 
         	<!-- 400 ghz = (40 * 10) e (12.5 * 32) -->
-    <physical-topology name="nsf" cores="7" protection="true" slots="32" sharing="false" grooming="false" slotsBandwidth="12.5">
+    <physical-topology name="nsf" cores="7" protection="true" slots="32" sharing="false" grooming="true" slotsBandwidth="12.5">
         <nodes>
         	<!-- type 1 = cs, type 2 = fog, type 3 = co -->
             <node id="0" type="1"/>
