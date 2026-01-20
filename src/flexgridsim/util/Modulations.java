@@ -179,5 +179,23 @@ public class Modulations {
 			return 0;
 		}
 	}
+
+	//Arthur
+    //Método adicionado para utilizar no algoritmo EEMPR, pois o getmodulationbydistance é bem mais conservador
+    //e não fiel ao que o artigo trabalha 
+    public static int getModulationByDistanceHosseini(int givendistance){
+        if(givendistance < 0)
+            return -1;
+
+        if (givendistance <= 1000){
+            return 3; // 16QAM
+        } else if (givendistance <= 2000){
+            return 2; // 8QAM
+        } else if (givendistance <= 4000){
+            return 1; // QPSK
+        } else {
+            return 0; // BPSK
+        }
+    }
 	
 }
