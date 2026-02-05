@@ -198,4 +198,15 @@ public class Modulations {
         }
     }
 	
+	//Arthur
+	//Novo método apenas para modificar o algoritmo EEMPR
+	public static int getModulationByHosseiniModified (int givendistance) {
+		if(givendistance <= 100) return 5; //64QAM 
+		if(givendistance <= 300) return 4; //32QAM
+		if(givendistance <= 600) return 3; //16QAM
+		if(givendistance <= 1200) return 2; //8QAM
+		if(givendistance <= 2500) return 1; //QPSK
+		return 0; //BPSK 
+	}
+	
 }
