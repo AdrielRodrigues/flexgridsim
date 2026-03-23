@@ -85,8 +85,8 @@ public class PhysicalTopology {
             if (Simulator.verbose) {
                 System.out.println(Integer.toString(links) + " links");
             }
-            linkVector = new FlexGridLink[links]; //Aqui que ele cria os enlaces //Faz sentido criar o linkAtivo
-            adjMatrix = new FlexGridLink[nodes][nodes]; //Ele não guarda a informação da matriz quando o ID não existe. O que faz então?
+            linkVector = new FlexGridLink[links];
+            adjMatrix = new FlexGridLink[nodes][nodes];
             for (int i = 0; i < links; i++) {
                 id = Integer.parseInt(((Element) linklist.item(i)).getAttribute("id"));
                 src = Integer.parseInt(((Element) linklist.item(i)).getAttribute("source"));

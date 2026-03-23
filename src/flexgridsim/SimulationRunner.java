@@ -23,15 +23,11 @@ public class SimulationRunner {
         Event event;
         Tracer tr = Tracer.getTracerObject();
         MyStatistics st = MyStatistics.getMyStatisticsObject();
-        boolean last = false;
-        int a = 0;
         while ((event = events.popEvent()) != null) {
 	        tr.add(event);
 	        st.addEvent(event);
-            cp.newEvent(event, last);
-            //System.out.println(a++);
+            cp.newEvent(event);
         }
-//        cp.last();
         System.out.println(st.getblocked());
     }
 }

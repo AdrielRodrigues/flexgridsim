@@ -38,9 +38,6 @@ public class ControlPlane implements ControlPlaneForRSA {
     private MyStatistics st = MyStatistics.getMyStatisticsObject();
     
     
-//    public void last () {
-//    	System.out.print(this.rsa.get_counter());
-//    }
 	/**
 	 * Creates a new ControlPlane object.
 	 *
@@ -81,20 +78,14 @@ public class ControlPlane implements ControlPlaneForRSA {
      * @param event the Event object taken from the queue 
      */
 
-    public void newEvent(Event event, boolean last) {
+    public void newEvent(Event event) {
         if (event instanceof FlowArrivalEvent) {
         	Flow flow = ((FlowArrivalEvent) event).getFlow();        	
             newFlow(flow);
             rsa.flowArrival(flow);            
         } else if (event instanceof FlowDepartureEvent) {
-        	if (last)
-        		System.out.println("First catch");
             Flow removedFlow = removeFlow(((FlowDepartureEvent) event).getID());
-            if (last)
-            	System.out.println("Catch here");
             rsa.flowDeparture(removedFlow); // Useless
-            if (last)
-            	System.out.println("Catch over here");
         } else if (event instanceof FailureIn) {
         	newFailure(((FailureIn) event).getFail());
         	rerouteFlowFailed(((FailureIn) event).getFail());

@@ -34,7 +34,6 @@ public class Main {
 		boolean trace = false;
 		int seed = 1;
 		double minload = 0, maxload = 0, step = 1;
-		// TODO tem que arrumar aqui, pra funcionar só com 2 argumentos
 		if (args.length <= 2 || args.length > 8) {
 			System.out.println(usage);
 			System.exit(0);
@@ -91,7 +90,6 @@ public class Main {
 		simConfigFile = args[0];
 		seed = Integer.parseInt(args[1]);
 		
-//		String sim_folder = "timestamp_01";
 		String sim_folder= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
                 
 		for (double load = minload; load <= maxload; load += step) {

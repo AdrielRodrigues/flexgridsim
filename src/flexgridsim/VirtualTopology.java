@@ -151,7 +151,6 @@ public class VirtualTopology {
                 this.nextLightpathID++;
                 return id; 
             }
-        //	System.out.println("ruim");ailS
             return -1;
 
         }
@@ -180,7 +179,6 @@ public class VirtualTopology {
                 this.nextLightpathID++;
                 return id; 
             }
-        //	System.out.println("ruim");
             return -1;
 
         }
@@ -208,7 +206,6 @@ public class VirtualTopology {
 	             this.nextLightpathID++;
 	             return id;
             }
-           // System.out.println("VT - linha 142");
             return -1;
         }
 
@@ -235,7 +232,6 @@ public class VirtualTopology {
 	             this.nextLightpathID++;
 	             return id;
             }
-           // System.out.println("VT - linha 142");
             return -1;
         }
 
